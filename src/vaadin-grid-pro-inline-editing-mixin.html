@@ -254,6 +254,21 @@ See <a href="https://vaadin.com/license/cval-3">the website</a> for the complete
       }
     }
 
+    /**
+     * Invoke edit mode on the cell at the given row index and column path.
+     */
+    editCell(rowIndex, columnPath) {
+      this._ensureScrolledToIndex(rowIndex);
+      const row = this._getRowByIndex(rowIndex);
+      const editColumn = this._getEditColumns().filter(column => column.path === columnPath)[0];
+      if (typeof row !== 'undefined' && typeof editColumn !== 'undefined') {
+        const cell = Array.from(row.children).filter(cell => cell._column === editColumn)[0];
+        if (typeof cell !== 'undefined') {
+          this._startEdit(cell, editColumn);
+        }
+      }
+    }
+
     _startEdit(cell, column) {
       // cancel debouncer enqueued on focusout
       this._cancelStopEdit();
